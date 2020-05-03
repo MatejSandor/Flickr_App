@@ -21,7 +21,6 @@ class GetRawData : AsyncTask<String, Void, String>() {
             downloadStatus = DownloadStatus.NOT_INITIALIZED
             return "No URL specified"
         }
-
         try {
             downloadStatus = DownloadStatus.OK
             return URL(params[0]).readText()
