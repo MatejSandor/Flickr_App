@@ -8,7 +8,7 @@ import java.net.MalformedURLException
 import java.net.URL
 
 enum class DownloadStatus() {
-    OK,IDLE, NOT_INITIALIZED, FAILED_OR_EMPTY, PERMISSIONS_ERROR, ERROR
+    OK, IDLE, NOT_INITIALISED, FAILED_OR_EMPTY, PERMISSIONS_ERROR, ERROR
 }
 
 private const val TAG = "GetRawData"
@@ -17,33 +17,33 @@ class GetRawData : AsyncTask<String, Void, String>() {
     private var downloadStatus = DownloadStatus.IDLE
 
     override fun doInBackground(vararg params: String?): String {
-        if(params[0] == null) {
-            downloadStatus = DownloadStatus.NOT_INITIALIZED
+        if (params[0] == null) {
+            downloadStatus = DownloadStatus.NOT_INITIALISED
             return "No URL specified"
         }
+
         try {
             downloadStatus = DownloadStatus.OK
             return URL(params[0]).readText()
         } catch (e: Exception) {
             val errorMessage = when (e) {
                 is MalformedURLException -> {
-                    downloadStatus = DownloadStatus.NOT_INITIALIZED
-                    return "MalformedURLException ${e.message}"
+                    downloadStatus = DownloadStatus.NOT_INITIALISED
+                    "doInBackground: Invalid URL ${e.message}"
                 }
                 is IOException -> {
                     downloadStatus = DownloadStatus.FAILED_OR_EMPTY
-                    return "IOException ${e.message}"
+                    "doInBackground: IO Exception reading data: ${e.message}"
                 }
                 is SecurityException -> {
                     downloadStatus = DownloadStatus.PERMISSIONS_ERROR
-                    return "Security Exception ${e.message}"
-                }
-                else -> {
+                    "doInBackground: Security exception: Needs permission? ${e.message}"
+                } else -> {
                     downloadStatus = DownloadStatus.ERROR
-                    return "Unknown Exception ${e.message}"
+                    "Unknown error: ${e.message}"
                 }
             }
-            Log.e(TAG,errorMessage)
+            Log.e(TAG, errorMessage)
             return errorMessage
         }
     }
