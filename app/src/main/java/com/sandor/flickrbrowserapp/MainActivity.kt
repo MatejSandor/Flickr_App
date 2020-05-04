@@ -1,6 +1,5 @@
 package com.sandor.flickrbrowserapp
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val getRawData = GetRawData()
+        getRawData.setDownloadCompleteListener(this)
         getRawData.execute("https://www.flickr.com/services/feeds/photos_public.gne?/tag=android,oreo,sdk&tagmode=any&format=json&nojsoncallback=1")
 
         Log.d(TAG, "onCreate: ends here")
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onDownloadComplete(data: String, status: DownloadStatus) {
-        if(status == DownloadStatus.OK) {
+        if (status == DownloadStatus.OK) {
             Log.d(TAG, "onDownloadComplete: called and data is $data")
         } else {
             Log.d(TAG, "onDownloadComplete: failed with status $status. Error message is $data")

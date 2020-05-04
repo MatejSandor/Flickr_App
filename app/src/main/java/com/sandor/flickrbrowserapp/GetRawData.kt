@@ -13,8 +13,19 @@ enum class DownloadStatus() {
 
 private const val TAG = "GetRawData"
 
-class GetRawData : AsyncTask<String, Void, String>() {
+class GetRawData() : AsyncTask<String, Void, String>() {
     private var downloadStatus = DownloadStatus.IDLE
+
+    private var listener: MainActivity? = null
+
+    fun setDownloadCompleteListener(callbackObject: MainActivity?) {
+        listener = callbackObject
+    }
+
+    override fun onPostExecute(result: String) {
+        Log.d(TAG, "onPostExecute: called with parameter $result")
+        listener?.onDownloadComplete(result,downloadStatus)
+    }
 
     override fun doInBackground(vararg params: String?): String {
         if (params[0] == null) {
@@ -26,6 +37,7 @@ class GetRawData : AsyncTask<String, Void, String>() {
             downloadStatus = DownloadStatus.OK
             return URL(params[0]).readText()
         } catch (e: Exception) {
+
             val errorMessage = when (e) {
                 is MalformedURLException -> {
                     downloadStatus = DownloadStatus.NOT_INITIALISED
@@ -38,7 +50,8 @@ class GetRawData : AsyncTask<String, Void, String>() {
                 is SecurityException -> {
                     downloadStatus = DownloadStatus.PERMISSIONS_ERROR
                     "doInBackground: Security exception: Needs permission? ${e.message}"
-                } else -> {
+                }
+                else -> {
                     downloadStatus = DownloadStatus.ERROR
                     "Unknown error: ${e.message}"
                 }
@@ -48,7 +61,4 @@ class GetRawData : AsyncTask<String, Void, String>() {
         }
     }
 
-    override fun onPostExecute(result: String?) {
-        Log.d(TAG, "onPostExecute: called with parameter $result")
-    }
 }
