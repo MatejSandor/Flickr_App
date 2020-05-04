@@ -1,5 +1,7 @@
 package com.sandor.flickrbrowserapp
 
+import android.net.Uri
+import android.nfc.NdefRecord.createUri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +21,28 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        val url = createUri(
+            "https://www.flickr.com/services/feeds/photos_public.gne",
+            "android,oreo",
+            "en-us",
+            true
+        )
         val getRawData = GetRawData(this)
-        getRawData.execute("https://www.flickr.com/services/feeds/photos_public.gne?/tag=android,oreo,sdk&tagmode=any&format=json&nojsoncallback=1")
+        getRawData.execute(url)
 
         Log.d(TAG, "onCreate: ends here")
+    }
+
+    private fun createUri(baseUrl: String, searchCriteria: String, language: String, matchAll: Boolean): String {
+        Log.d(TAG, "createUri: called")
+        return Uri.parse(baseUrl)
+            .buildUpon()
+            .appendQueryParameter("tags", searchCriteria)
+            .appendQueryParameter("tagmode", if (matchAll) "ALL" else "ANY")
+            .appendQueryParameter("lang", language)
+            .appendQueryParameter("format", "json")
+            .appendQueryParameter("nojsoncallback", "1")
+            .build().toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
