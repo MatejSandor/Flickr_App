@@ -2,6 +2,7 @@ package com.sandor.flickrbrowserapp
 
 import android.os.AsyncTask
 import android.util.Log
+import org.json.JSONException
 import org.json.JSONObject
 
 private const val TAG = "GetFlickrJsonData"
@@ -15,6 +16,9 @@ class GetFlickrJsonData(private val listener: OnDataAvailable) : AsyncTask<Strin
 
     override fun doInBackground(vararg params: String?): ArrayList<Photo> {
         Log.d(TAG, "doInBackground: called")
+
+        val photoList = ArrayList<Photo>()
+
         try {
             val jsonData = JSONObject(params[0])
             val itemsArray = jsonData.getJSONArray("items")
@@ -29,13 +33,15 @@ class GetFlickrJsonData(private val listener: OnDataAvailable) : AsyncTask<Strin
                 val jsonMedia = jsonPhoto.getJSONObject("media")
                 val photoUrl = jsonMedia.getString("m")
                 val link = photoUrl.replaceFirst("_m.jpg","_b.jpg")
+
+                val photoObject = Photo(title,author,authorId,link,tags,photoUrl)
+                photoList.add(photoObject)
             }
 
-        } catch (e: Exception) {
-            val errorMessage = when(e) {
-                is SecurityException -> Log.e(TAG,"${e.message}")
-                else -> Log.e(TAG,"Unknown exception with message ${e.message}")
-            }
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            Log.e(TAG, ".doInBackground: Error processing Json data. ${e.message}")
+            listener.onError(e)
         }
         return TODO()
     }
