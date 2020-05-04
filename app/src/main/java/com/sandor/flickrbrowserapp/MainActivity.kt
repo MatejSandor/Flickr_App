@@ -10,7 +10,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlickrJsonData.OnDataAvailable {
+class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
+    GetFlickrJsonData.OnDataAvailable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate: called")
@@ -40,19 +41,21 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlic
     }
 
     override fun onDownloadComplete(data: String, status: DownloadStatus) {
+        val getFlickrJsonData = GetFlickrJsonData(this)
+        getFlickrJsonData.execute(data)
         if (status == DownloadStatus.OK) {
-            Log.d(TAG, "onDownloadComplete: called and data is $data")
+            Log.d(TAG, "onDownloadComplete: called")
         } else {
             Log.d(TAG, "onDownloadComplete: failed with status $status. Error message is $data")
         }
     }
 
     override fun onDataAvailable(data: List<Photo>) {
-        TODO("Not yet implemented")
+        Log.d(TAG, "onDataAvailable: called")
     }
 
     override fun onError(exception: Exception) {
-        TODO("Not yet implemented")
+        Log.e(TAG, "Exception ${exception.message}")
     }
 
 }

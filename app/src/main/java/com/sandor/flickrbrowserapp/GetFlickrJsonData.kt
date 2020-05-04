@@ -7,11 +7,12 @@ import org.json.JSONObject
 
 private const val TAG = "GetFlickrJsonData"
 
-class GetFlickrJsonData(private val listener: OnDataAvailable) : AsyncTask<String, Void, ArrayList<Photo>>() {
+class GetFlickrJsonData(private val listener: OnDataAvailable) :
+    AsyncTask<String, Void, ArrayList<Photo>>() {
 
     interface OnDataAvailable {
         fun onDataAvailable(data: List<Photo>)
-        fun onError (exception: Exception)
+        fun onError(exception: Exception)
     }
 
     override fun doInBackground(vararg params: String?): ArrayList<Photo> {
@@ -32,9 +33,9 @@ class GetFlickrJsonData(private val listener: OnDataAvailable) : AsyncTask<Strin
 
                 val jsonMedia = jsonPhoto.getJSONObject("media")
                 val photoUrl = jsonMedia.getString("m")
-                val link = photoUrl.replaceFirst("_m.jpg","_b.jpg")
+                val link = photoUrl.replaceFirst("_m.jpg", "_b.jpg")
 
-                val photoObject = Photo(title,author,authorId,link,tags,photoUrl)
+                val photoObject = Photo(title, author, authorId, link, tags, photoUrl)
                 photoList.add(photoObject)
             }
 
@@ -43,10 +44,13 @@ class GetFlickrJsonData(private val listener: OnDataAvailable) : AsyncTask<Strin
             Log.e(TAG, ".doInBackground: Error processing Json data. ${e.message}")
             listener.onError(e)
         }
-        return TODO()
+        return photoList
     }
 
-    override fun onPostExecute(result: ArrayList<Photo>?) {
+    override fun onPostExecute(result: ArrayList<Photo>) {
         Log.d(TAG, "onPostExecute: called")
+        super.onPostExecute(result)
+        listener.onDataAvailable(result)
+        Log.d(TAG, "onPostExecute: ends")
     }
 }
