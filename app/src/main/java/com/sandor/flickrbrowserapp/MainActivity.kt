@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
         setSupportActionBar(toolbar)
 
         recycler_view.layoutManager = LinearLayoutManager(this)
+        recycler_view.addOnItemTouchListener(RecyclerItemClickListener(this,recycler_view,this))
         recycler_view.adapter = flickrRecyclerViewAdapter
 
         val url = createUri(
