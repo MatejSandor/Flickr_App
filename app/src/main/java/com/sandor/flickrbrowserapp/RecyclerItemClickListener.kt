@@ -19,14 +19,25 @@ class RecyclerItemClickListener(context: Context, recyclerView: RecyclerView, pr
     }
 
     private val gestureDetector = GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             Log.d(TAG, "onSingleTapUp: called")
-            return true
+            val childView = recyclerView.findChildViewUnder(e.x,e.y)
+            return if (childView != null) {  // Added 2018-12-18
+                Log.d(TAG, ".onSingleTapUp calling listener.onItemClick")
+                listener.onItemClick(childView, recyclerView.getChildAdapterPosition(childView))
+                true
+            } else {
+                false
+            }
         }
 
-        override fun onLongPress(e: MotionEvent?) {
+        override fun onLongPress(e: MotionEvent) {
             Log.d(TAG, "onLongPress: called")
-            super.onLongPress(e)
+            val childView = recyclerView.findChildViewUnder(e.x,e.y)
+            if (childView != null) {  // Added 2018-12-18
+                Log.d(TAG, ".onLongPress calling listener.onItemClick")
+                listener.onItemLongClick(childView, recyclerView.getChildAdapterPosition(childView))
+            }
         }
     })
 
