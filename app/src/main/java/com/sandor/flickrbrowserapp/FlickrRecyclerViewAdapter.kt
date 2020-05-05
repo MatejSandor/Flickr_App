@@ -16,11 +16,12 @@ class FlickrImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var title = view.findViewById<TextView>(R.id.title)
 }
 
-class FlickrRecyclerViewAdapter(private var photoList: List<Photo>) : RecyclerView.Adapter<FlickrImageViewHolder>() {
+class FlickrRecyclerViewAdapter(private var photoList: List<Photo>) :
+    RecyclerView.Adapter<FlickrImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlickrImageViewHolder {
         Log.d(TAG, "onCreateViewHolder: called, new view requested")
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.browse,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.browse, parent, false)
         return FlickrImageViewHolder(view)
     }
 
@@ -29,8 +30,8 @@ class FlickrRecyclerViewAdapter(private var photoList: List<Photo>) : RecyclerVi
         notifyDataSetChanged()
     }
 
-    fun getPhoto(position: Int) : Photo? {
-        return if(photoList.isNotEmpty()) photoList[position] else null
+    fun getPhoto(position: Int): Photo? {
+        return if (photoList.isNotEmpty()) photoList[position] else null
     }
 
     override fun getItemCount(): Int {

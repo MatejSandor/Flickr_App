@@ -40,7 +40,12 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
         Log.d(TAG, "onCreate: ends here")
     }
 
-    private fun createUri(baseUrl: String, searchCriteria: String, language: String, matchAll: Boolean): String {
+    private fun createUri(
+        baseUrl: String,
+        searchCriteria: String,
+        language: String,
+        matchAll: Boolean
+    ): String {
         Log.d(TAG, "createUri: called")
         return Uri.parse(baseUrl)
             .buildUpon()
