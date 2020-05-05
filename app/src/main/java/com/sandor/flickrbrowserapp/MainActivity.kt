@@ -7,6 +7,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -15,7 +17,7 @@ import kotlinx.android.synthetic.main.content_main.*
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
-    GetFlickrJsonData.OnDataAvailable {
+    GetFlickrJsonData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener {
 
     private val flickrRecyclerViewAdapter = FlickrRecyclerViewAdapter(ArrayList())
 
@@ -91,4 +93,13 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete,
         Log.e(TAG, "Exception ${exception.message}")
     }
 
+    override fun onItemClick(view: View, position: Int) {
+        Log.d(TAG, "onItemClick: called")
+        Toast.makeText(this,"button was tapped",Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemLongClick(view: View, position: Int) {
+        Log.d(TAG, "onItemLongClick: called")
+        Toast.makeText(this,"button was tapped for longer!",Toast.LENGTH_LONG).show()
+    }
 }
