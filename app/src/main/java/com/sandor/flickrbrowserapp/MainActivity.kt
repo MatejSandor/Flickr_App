@@ -67,7 +67,10 @@ class MainActivity : BaseActivity(), GetRawData.OnDownloadComplete,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d(TAG, "onOptionsItemSelected: called")
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_search -> {
+                startActivity(Intent(this,SearchActivity::class.java))
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
