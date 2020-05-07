@@ -108,4 +108,9 @@ class MainActivity : BaseActivity(), GetRawData.OnDownloadComplete,
         Log.d(TAG, "onItemLongClick: called")
         Toast.makeText(this,"button was tapped for longer!",Toast.LENGTH_LONG).show()
     }
+
+    override fun onResume() {
+        Log.d(TAG, "onResume: called")
+        super.onResume()
+    }
 }
