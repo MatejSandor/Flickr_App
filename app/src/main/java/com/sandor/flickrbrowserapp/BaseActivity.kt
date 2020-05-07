@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
 private const val TAG = "BaseActivity"
-internal const val FLICKER_QUERY = "FLICKER_QUERY"
+internal const val FLICKR_QUERY = "FLICKER_QUERY"
 internal const val PHOTO_TRANSFER = "PHOTO_TRANSFER"
 
 @SuppressLint("Registered")
