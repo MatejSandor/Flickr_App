@@ -1,4 +1,4 @@
-#Flickr Browser App
+# Flickr Browser App
 
 Android mobile application built in Kotlin that lets users search one of the largest image databases
 in the world on their phones using Flickr API
